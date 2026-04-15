@@ -34,10 +34,10 @@ jobs:
           poetry run python manage.py test
 
       - name: Trigger Deploy to Render
-      # Esta linha garante que o deploy só ocorra se os testes passarem na branch main
-      if: github.ref == 'refs/heads/main'
-      run: |
-        curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+        # Esta linha garante que o deploy só ocorra se os testes passarem na branch main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
 
       - name: Wemake Python Stylguide
         uses: wemake-services/wemake-python-styleguide@1.6.1
