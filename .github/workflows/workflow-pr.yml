@@ -26,8 +26,13 @@ jobs:
         run: python -m poetry install
 
       - name: Test
+        env:
+          # Isso garante que o Django tenha tudo que precisa para ligar os motores
+          SECRET_KEY: "chave-secreta-dos-tests"
+          DJANGO_ALLOWED_HOSTS: "localhost 127.0.0.1"
         run: |
           poetry run python manage.py test
+
       - name: Wemake Python Stylguide
         uses: wemake-services/wemake-python-styleguide@1.6.1
         continue-on-error: true
