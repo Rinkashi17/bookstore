@@ -30,6 +30,10 @@ jobs:
         run: poetry install
 
       - name: Test
+        env:
+          DJANGO_ALLOWED_HOSTS: "localhost 127.0.0.1"
+          # Se o seu banco pedir outras variáveis (como SECRET_KEY), coloque aqui também
+          SECRET_KEY: "uma-chave-qualquer-para-teste"
         run: |
           # O comando de teste do Django é "test", sem o "name:" grudado
           poetry run python manage.py test
