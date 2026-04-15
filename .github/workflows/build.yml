@@ -4,34 +4,32 @@ on: [push]
 
 jobs:
   build:
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.9]
-
-    runs-on: ubuntu-latest
+        python-version: ["3.13"]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v4 # Versão atualizada
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5 # Versão atualizada
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Install poetry
         run: |
-          python -m ensurepip
           python -m pip install --upgrade pip
-          python -m pip install --upgrade poetry
-
-      - name: View poetry --help
-        run: poetry --help
+          pip install poetry
 
       - name: Install dependencies
-        shell: bash
-        run: python -m poetry install
+        # Se o seu pyproject.toml estiver dentro da pasta bookstore,
+        # mude para: run: poetry install --directory bookstore
+        run: poetry install
 
       - name: Test
         run: |
+          # O comando de teste do Django é "test", sem o "name:" grudado
           poetry run python manage.py test
