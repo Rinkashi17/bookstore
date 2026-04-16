@@ -151,3 +151,5 @@ REST_FRAMEWORK = {
 CSRF_TRUSTED_ORIGINS = [
     'https://bookstore-api-h1co.onrender.com',
 ]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

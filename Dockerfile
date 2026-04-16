@@ -58,4 +58,4 @@ COPY . /app/
 
 EXPOSE 8000
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD python manage.py migrate && python setup_admin.py && python manage.py runserver 0.0.0.0:$PORT
