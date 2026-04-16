@@ -62,7 +62,8 @@ COPY . /app/
 
 EXPOSE 8000
 
-CMD python manage.py migrate && \
+CMD export DJANGO_SETTINGS_MODULE=bookstore.settings && \
+    python manage.py migrate && \
     python manage.py collectstatic --noinput && \
-    python -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='marcos_admin').exists() or User.objects.create_superuser('marcos_admin', 'marcos@email.com', 'admin2104')" && \
+    python -c "import django; django.setup(); from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='marcos_admin').exists() or User.objects.create_superuser('marcos_admin', 'marcos@email.com', 'admin2104')" && \
     python manage.py runserver 0.0.0.0:$PORT
