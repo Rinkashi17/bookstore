@@ -146,3 +146,8 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ],
 }
+
+# Permite que o Django confie no domínio do Render para o CSRF
+CSRF_TRUSTED_ORIGINS = [
+    'https://bookstore-api-h1co.onrender.com',
+]
