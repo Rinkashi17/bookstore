@@ -50,15 +50,19 @@ WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 
 # quicker install as runtime deps are already installed
-RUN  poetry install --no-root
 
 WORKDIR /app
 
+COPY pyproject.toml poetry.lock* /app/
+
+RUN poetry config virtualenvs.create false && \
+    poetry install --no-interaction --no-ansi --no-root
+    
 COPY . /app/
 
 EXPOSE 8000
 
-CMD poetry run python manage.py migrate && \
-    poetry run python manage.py collectstatic --noinput && \
-    poetry run python -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='marcos_admin').exists() or User.objects.create_superuser('marcos_admin', 'marcos@email.com', 'admin2104')" && \
-    poetry run python manage.py runserver 0.0.0.0:$PORT
+CMD python manage.py migrate && \
+    python manage.py collectstatic --noinput && \
+    python -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='marcos_admin').exists() or User.objects.create_superuser('marcos_admin', 'marcos@email.com', 'admin2104')" && \
+    python manage.py runserver 0.0.0.0:$PORT
