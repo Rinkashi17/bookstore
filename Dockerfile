@@ -58,4 +58,7 @@ COPY . /app/
 
 EXPOSE 8000
 
-CMD python manage.py migrate && python setup_admin.py && python manage.py runserver 0.0.0.0:$PORT
+CMD poetry run python manage.py migrate && \
+    poetry run python manage.py collectstatic --noinput && \
+    poetry run python -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='marcos_admin').exists() or User.objects.create_superuser('marcos_admin', 'marcos@email.com', 'admin2104')" && \
+    poetry run python manage.py runserver 0.0.0.0:$PORT
